@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1FBA76B-3231-426C-8D57-AFB694EDB6FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E6F18E54-76C0-41FA-A033-2333AD735BC3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB889242-EB2E-4B77-B8EA-C2E7BC4925AA}"
+ProjectSection(SolutionItems) = preProject
+	.dockerignore = .dockerignore
+	.gitignore = .gitignore
+	docker-compose.test.yml = docker-compose.test.yml
+	docker-compose.yml = docker-compose.yml
+	README.md = README.md
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glue.Delivery.WebApi", "src\Glue.Delivery.WebApi\Glue.Delivery.WebApi.csproj", "{784B44A2-060F-4F54-974A-82384C67464D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{784B44A2-060F-4F54-974A-82384C67464D} = {C1FBA76B-3231-426C-8D57-AFB694EDB6FE}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{784B44A2-060F-4F54-974A-82384C67464D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784B44A2-060F-4F54-974A-82384C67464D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784B44A2-060F-4F54-974A-82384C67464D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784B44A2-060F-4F54-974A-82384C67464D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
