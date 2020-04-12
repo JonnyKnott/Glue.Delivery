@@ -70,7 +70,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         [Fact]
         public async void POST_Should_Return_Success_If_POST_Successful()
         {
-            var requestObject = new DeliveryRecord
+            var requestObject = new DeliveryRequest
             {
                 DeliveryId = TestConstants.SuccessValue
             };
@@ -83,7 +83,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         [Fact]
         public async void POST_Should_Return_BadRequest_If_POST_Request_Is_Bad()
         {
-            var requestObject = new DeliveryRecord
+            var requestObject = new DeliveryRequest
             {
                 DeliveryId = TestConstants.BadRequestValue
             };
@@ -96,7 +96,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         [Fact]
         public async void POST_Should_Return_Error_If_POST_Request_Is_Bad()
         {
-            var requestObject = new DeliveryRecord
+            var requestObject = new DeliveryRequest
             {
                 DeliveryId = TestConstants.InternalErrorValue
             };
@@ -113,7 +113,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         [Fact]
         public async void PUT_Should_Return_Success_If_PUT_Successful()
         {
-            var requestObject = new DeliveryRecord
+            var requestObject = new DeliveryRequest
             {
                 DeliveryId = TestConstants.SuccessValue
             };
@@ -126,7 +126,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         [Fact]
         public async void PUT_Should_Return_BadRequest_If_PUT_Request_Is_Bad()
         {
-            var requestObject = new DeliveryRecord
+            var requestObject = new DeliveryRequest
             {
                 DeliveryId = TestConstants.BadRequestValue
             };
@@ -139,7 +139,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         [Fact]
         public async void PUT_Should_Return_Error_If_PUT_Request_Is_Bad()
         {
-            var requestObject = new DeliveryRecord
+            var requestObject = new DeliveryRequest
             {
                 DeliveryId = TestConstants.InternalErrorValue
             };

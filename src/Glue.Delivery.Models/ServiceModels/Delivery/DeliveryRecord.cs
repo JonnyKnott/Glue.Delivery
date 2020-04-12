@@ -20,5 +20,7 @@ namespace Glue.Delivery.Models.ServiceModels.Delivery
         public Recipient Recipient { get; set; }
         [DynamoDBProperty]
         public Order Order { get; set; }
+
+        public bool IsPending => State == DeliveryState.Created || State == DeliveryState.Approved;
     }
 }
