@@ -15,6 +15,8 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glue.Delivery.WebApi", "src\Glue.Delivery.WebApi\Glue.Delivery.WebApi.csproj", "{784B44A2-060F-4F54-974A-82384C67464D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glue.Delivery.WebApi.Integration.Test", "test\Glue.Delivery.WebApi.Integration.Test\Glue.Delivery.WebApi.Integration.Test.csproj", "{21E748CF-F5CE-4226-BE1A-F9278BAD2D2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,11 +24,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{784B44A2-060F-4F54-974A-82384C67464D} = {C1FBA76B-3231-426C-8D57-AFB694EDB6FE}
+		{21E748CF-F5CE-4226-BE1A-F9278BAD2D2F} = {E6F18E54-76C0-41FA-A033-2333AD735BC3}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{784B44A2-060F-4F54-974A-82384C67464D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{784B44A2-060F-4F54-974A-82384C67464D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{784B44A2-060F-4F54-974A-82384C67464D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{784B44A2-060F-4F54-974A-82384C67464D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E748CF-F5CE-4226-BE1A-F9278BAD2D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E748CF-F5CE-4226-BE1A-F9278BAD2D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E748CF-F5CE-4226-BE1A-F9278BAD2D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E748CF-F5CE-4226-BE1A-F9278BAD2D2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
