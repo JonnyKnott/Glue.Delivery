@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Glue.Delivery.Services;
+using Glue.Delivery.WebApi.Integration.Test.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Infrastructure
             builder.ConfigureServices(services =>
             {
                 //Service replacement
+                services.ReplaceServiceType<IDeliveryService, TestDeliveryService>();
             });
         }
     }

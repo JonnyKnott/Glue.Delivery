@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Glue.Delivery.Core\Glue.Delivery.Core.csproj" />
+      <ProjectReference Include="..\Glue.Delivery.Models\Glue.Delivery.Models.csproj" />
+    </ItemGroup>
+
+</Project>

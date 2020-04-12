@@ -5,11 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="AWSSDK.Core" Version="3.3.106.4" />
+      <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.101" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
+      <ProjectReference Include="..\Glue.Delivery.Models\Glue.Delivery.Models.csproj" />
+      <ProjectReference Include="..\Glue.Delivery.Services\Glue.Delivery.Services.csproj" />
     </ItemGroup>
 
 </Project>

@@ -7,6 +7,15 @@ services:
       dockerfile: src/Glue.Delivery.WebApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - Connections__DynamoDb=http://dynamodb:8000
+      - AWS_ACCESS_KEY_ID=abc
+      - AWS_SECRET_ACCESS_KEY=def
     ports:
       - 9003:80
     restart: always
+  dynamodb:
+    image: amazon/dynamodb-local
+    hostname: dynamodb-local
+    container_name: dynamodb-local
+    ports:
+      - "8042:8000"
