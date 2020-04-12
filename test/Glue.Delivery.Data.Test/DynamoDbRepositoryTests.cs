@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Moq;
 using Xunit;
 
@@ -35,6 +37,29 @@ namespace Glue.Delivery.Data.Test
             
             Assert.True(result.Success);
             _mockContext.Verify(x => x.LoadAsync<TestEntity>(partitionKey, default), Times.Once);
+        }
+
+        [Fact]
+        public async void GetItem_Should_Use_QueryModels_To_Create_ScanConditions()
+        {
+            var queryModels = new List<QueryModel>
+            {
+                new QueryModel("Field", ScanOperator.Equal, "Value")
+            };
+
+            //Implemented in try catch due to inability to mock context.
+            try
+            {
+                var result = await _repository.GetItems(queryModels);
+            }
+            catch (NullReferenceException nullException)
+            {
+                _mockContext.Verify(x =>
+                    x.ScanAsync<TestEntity>(
+                        It.Is<ICollection<ScanCondition>>(condition => condition.Single().PropertyName == "Field"),
+                        default
+                    ), Times.Once);
+            }
         }
         
         [Fact]
@@ -98,6 +123,7 @@ namespace Glue.Delivery.Data.Test
             _mockContext.Setup(x => x.DeleteAsync<TestEntity>(It.IsAny<string>(), default));
             _mockContext.Setup(x => x.LoadAsync<TestEntity>(It.IsAny<string>(), default))
                 .ReturnsAsync(new TestEntity());
+            _mockContext.Setup(x => x.ScanAsync<TestEntity>(It.IsAny<IEnumerable<ScanCondition>>(), default));
             _mockContext.Setup(x => x.SaveAsync(It.IsAny<TestEntity>(), default));
         }
     }

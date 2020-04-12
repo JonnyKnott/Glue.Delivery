@@ -9,7 +9,7 @@ namespace Glue.Delivery.Data
     {
         Task<ServiceResult> PutItem(TDataType dataEntity);
         Task<ServiceResult> UpdateItem(TDataType dataEntity);
-        Task<ServiceObjectResult<ICollection<TDataType>>> GetItems();
+        Task<ServiceObjectResult<ICollection<TDataType>>> GetItems(ICollection<QueryModel> queryModels = null);
         Task<ServiceObjectResult<TDataType>> GetItem(string partitionKey);
         Task<ServiceResult> DeleteItem(string partitionKey);
     }

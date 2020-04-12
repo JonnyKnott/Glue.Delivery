@@ -14,7 +14,6 @@ namespace Glue.Delivery.WebApi.Mapping
             CreateMap<ApiModels.Delivery.Recipient, ServiceModels.Delivery.Recipient>().ReverseMap();
             CreateMap<ApiModels.Delivery.AccessWindow, ServiceModels.Delivery.AccessWindow>().ReverseMap();
             CreateMap<ApiModels.Delivery.Order, ServiceModels.Delivery.Order>().ReverseMap();
-            // CreateMap<List<ApiModels.Delivery.DeliveryRecord>, List<ServiceModels.Delivery.DeliveryRecord>>().ReverseMap();
         }
     }
 }

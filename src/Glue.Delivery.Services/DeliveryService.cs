@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2.DocumentModel;
 using Glue.Delivery.Core.Models;
 using Glue.Delivery.Data;
 using Glue.Delivery.Models.ServiceModels.Delivery;
+using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
 
 namespace Glue.Delivery.Services
 {
@@ -36,9 +38,14 @@ namespace Glue.Delivery.Services
                 : ServiceObjectResult<DeliveryRecord>.Succeeded(delivery);
         }
 
-        public async Task<ServiceObjectResult<ICollection<DeliveryRecord>>> Select()
+        public async Task<ServiceObjectResult<ICollection<DeliveryRecord>>> Select(DeliveryState? state = null)
         {
-            var result = await _repository.GetItems();
+            var result = state.HasValue ? 
+                await _repository.GetItems(new List<QueryModel>
+                    {
+                        new QueryModel(nameof(DeliveryRecord.State), ScanOperator.Equal, state)
+                    })
+                : await _repository.GetItems();
 
             return result.Success ? 
                 ServiceObjectResult<ICollection<DeliveryRecord>>.Succeeded(result.Result)

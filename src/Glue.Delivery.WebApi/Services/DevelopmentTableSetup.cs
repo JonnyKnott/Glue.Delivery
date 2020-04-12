@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Glue.Delivery.Core;
+using Glue.Delivery.Models.ServiceModels.Delivery;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -38,7 +39,7 @@ namespace Glue.Delivery.WebApi.Services
                 {
                     new AttributeDefinition
                     {
-                        AttributeName = Constants.DynamoDb.DeliveryTablePartitionKey,
+                        AttributeName = nameof(DeliveryRecord.DeliveryId),
                         AttributeType = "S"
                     }
                 },
@@ -57,7 +58,7 @@ namespace Glue.Delivery.WebApi.Services
                 },
                 TableName = Constants.DynamoDb.DeliveryTableName
             };
-
+            
             await _dynamoDbClient.CreateTableAsync(request);
         }
 

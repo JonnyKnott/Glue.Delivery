@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
@@ -40,9 +41,12 @@ namespace Glue.Delivery.Data
             return ServiceResult.Succeeded();
         }
 
-        public async Task<ServiceObjectResult<ICollection<TDataType>>> GetItems()
+        public async Task<ServiceObjectResult<ICollection<TDataType>>> GetItems(ICollection<QueryModel> queryModels = null)
         {
-            var scanConditions = new List<ScanCondition>();
+            var scanConditions = queryModels == null ? 
+                new List<ScanCondition>() 
+                : queryModels.Select(x => new ScanCondition(
+                x.FieldName, x.Operator, x.Value)).ToList();
             
             var results = await _dynamoDbContext.ScanAsync<TDataType>(scanConditions).GetRemainingAsync();
 

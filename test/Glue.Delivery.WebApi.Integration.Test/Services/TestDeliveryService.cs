@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Glue.Delivery.Core.Models;
 using Glue.Delivery.Models.ServiceModels.Delivery;
+using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
 using Glue.Delivery.Services;
 
 namespace Glue.Delivery.WebApi.Integration.Test.Services
@@ -14,7 +15,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Services
             return Task.FromResult(CreateObjectResponseForRequest<DeliveryRecord>(delivery.DeliveryId));
         }
 
-        public Task<ServiceObjectResult<ICollection<DeliveryRecord>>> Select()
+        public Task<ServiceObjectResult<ICollection<DeliveryRecord>>> Select(DeliveryState? state = null)
         {
             return Task.FromResult(
                 ServiceObjectResult<ICollection<DeliveryRecord>>.Succeeded(new List<DeliveryRecord>()));

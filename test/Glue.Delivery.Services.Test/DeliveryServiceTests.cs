@@ -4,6 +4,7 @@ using System.Linq;
 using Glue.Delivery.Core.Models;
 using Glue.Delivery.Data;
 using Glue.Delivery.Models.ServiceModels.Delivery;
+using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
 using Moq;
 using Xunit;
 
@@ -139,6 +140,19 @@ namespace Glue.Delivery.Services.Test
             Assert.False(result.Success);
             Assert.Contains(error, result.Errors);
         }
+
+        [Fact]
+        public async void Select_Should_Query_By_State()
+        {
+            var result = await _deliveryService.Select(DeliveryState.Approved);
+            
+            _mockRepository.Verify(x => 
+                x.GetItems(
+                    It.Is<ICollection<QueryModel>>(
+                        queryModels => queryModels.Count == 1)
+                    ), 
+                Times.Once);
+        }
         
         [Fact]
         public async void SelectAll_Should_Return_Result_If_Found()
@@ -149,23 +163,7 @@ namespace Glue.Delivery.Services.Test
             Assert.Single(result.Result);
             Assert.Equal(DefaultDeliveryId, result.Result.Single().DeliveryId);
         }
-        
-        [Fact]
-        public async void SelectAll_Should_Return_Errors_If_Select_Fails()
-        {
-            var error = "Error";
 
-            _mockRepository.Setup(x =>
-                    x.GetItems())
-                .ReturnsAsync(ServiceObjectResult<ICollection<DeliveryRecord>>.Failed(null, error));
-
-            
-            var result = await _deliveryService.Select();
-            
-            Assert.False(result.Success);
-            Assert.Contains(error, result.Errors);
-        }
-        
         [Fact]
         public async void Delete_Should_Return_Result_If_Found()
         {
@@ -196,13 +194,16 @@ namespace Glue.Delivery.Services.Test
         {
             _mockRepository.Setup(x => x.PutItem(It.IsAny<DeliveryRecord>()))
                 .ReturnsAsync(ServiceResult.Succeeded);
+
+            _mockRepository.Setup(x => x.GetItems(It.IsAny<ICollection<QueryModel>>()))
+                .ReturnsAsync(ServiceObjectResult<ICollection<DeliveryRecord>>.Succeeded(new List<DeliveryRecord>{ record }));
+            
+            _mockRepository.Setup(x => x.GetItems(default))
+                .ReturnsAsync(ServiceObjectResult<ICollection<DeliveryRecord>>.Succeeded(new List<DeliveryRecord>{ record }));
             
             _mockRepository.Setup(x => x.DeleteItem(It.IsAny<string>()))
                 .ReturnsAsync(ServiceResult.Succeeded);
-            
-            _mockRepository.Setup(x => x.GetItems())
-                .ReturnsAsync(ServiceObjectResult<ICollection<DeliveryRecord>>.Succeeded(new List<DeliveryRecord>{ record }));
-            
+
             _mockRepository.Setup(x => x.GetItem(It.IsAny<string>()))
                 .ReturnsAsync(ServiceObjectResult<DeliveryRecord>.Succeeded(record));
             

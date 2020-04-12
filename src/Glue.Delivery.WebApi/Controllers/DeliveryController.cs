@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Glue.Delivery.Core.Helpers;
 using Glue.Delivery.Core.Models;
 using Glue.Delivery.Models.ServiceModels.Delivery;
+using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
 using Glue.Delivery.Services;
 using Glue.Delivery.WebApi.Mapping.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -30,17 +33,17 @@ namespace Glue.Delivery.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]DeliveryState? state = null)
         {
-            var result = await _deliveryService.Select();
-            
+            var result = await _deliveryService.Select(state);
+
             return result.Success ? 
                 Ok(_mapper.Map<List<DeliveryRecord>>(result.Result)) 
                 : GenerateResultFromServiceResult(result);
         }
 
         [HttpGet("{deliveryId}")]
-        public async Task<IActionResult> Get(string deliveryId)
+        public async Task<IActionResult> GetById(string deliveryId)
         {
             var result = await _deliveryService.Select(deliveryId);
             
@@ -87,7 +90,7 @@ namespace Glue.Delivery.WebApi.Controllers
                 Ok()
                 : GenerateResultFromServiceResult(result);
         }
-        
+
         private IActionResult GenerateResultFromServiceResult(
             ServiceResult serviceResult)
         {
