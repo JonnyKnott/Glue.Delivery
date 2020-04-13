@@ -10,7 +10,8 @@ namespace Glue.Delivery.WebApi.Mapping
     {
         public Mappings()
         {
-            CreateMap<ApiModels.Delivery.DeliveryRecord, ServiceModels.Delivery.DeliveryRecord>().ReverseMap();
+            CreateMap<ApiModels.Delivery.DeliveryRequest, ServiceModels.Delivery.DeliveryRecord>().ReverseMap();
+            CreateMap<ApiModels.Delivery.DeliveryResponse, ServiceModels.Delivery.DeliveryRecord>().ReverseMap();
             CreateMap<ApiModels.Delivery.Recipient, ServiceModels.Delivery.Recipient>().ReverseMap();
             CreateMap<ApiModels.Delivery.AccessWindow, ServiceModels.Delivery.AccessWindow>().ReverseMap();
             CreateMap<ApiModels.Delivery.Order, ServiceModels.Delivery.Order>().ReverseMap();

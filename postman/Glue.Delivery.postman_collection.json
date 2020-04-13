@@ -6,6 +6,110 @@
 	},
 	"item": [
 		{
+			"name": "CRUD",
+			"item": [
+				{
+					"name": "Update Delivery",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/delivery",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delivery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Delivery",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/delivery/347ec1e6-6388-4da8-9fda-b3137600569f",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delivery",
+								"347ec1e6-6388-4da8-9fda-b3137600569f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Deliveries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/delivery/f09a587b-6657-461f-935f-6262717b61d8",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delivery",
+								"f09a587b-6657-461f-935f-6262717b61d8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Delivery",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Delivery",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"state\": \"createx\",\r\n\"accessWindow\": {\r\n\"startTime\": \"2019-12-13T09:00:00Z\",\r\n\"endTime\": \"2020-12-13T11:00:00Z\"\r\n},\r\n\"recipient\": {\r\n\"name\": \"John Doe\",\r\n\"address\": \"Merchant Road, London\",\r\n\"email\": \"john.doe@mail.com\",\r\n\"phoneNumber\": \"+44123123123\"\r\n},\r\n\"order\": {\r\n\"orderNumber\": \"12209667\",\r\n\"sender\": \"Ikea\"\r\n}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_uri}}/api/v1/delivery",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delivery"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Health Check",
 			"request": {
 				"method": "GET",
@@ -23,35 +127,7 @@
 			"response": []
 		},
 		{
-			"name": "Create Delivery",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\"state\": \"createx\",\r\n\"accessWindow\": {\r\n\"startTime\": \"2019-12-13T09:00:00Z\",\r\n\"endTime\": \"2020-12-13T11:00:00Z\"\r\n},\r\n\"recipient\": {\r\n\"name\": \"John Doe\",\r\n\"address\": \"Merchant Road, London\",\r\n\"email\": \"john.doe@mail.com\",\r\n\"phoneNumber\": \"+44123123123\"\r\n},\r\n\"order\": {\r\n\"orderNumber\": \"12209667\",\r\n\"sender\": \"Ikea\"\r\n}\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_uri}}/api/v1/delivery",
-					"host": [
-						"{{base_uri}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"delivery"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Delivery",
+			"name": "Get Deliveries By Status",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -62,59 +138,63 @@
 			"response": []
 		},
 		{
-			"name": "Get All Deliveries",
+			"name": "Approve Delivery",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_uri}}/api/v1/delivery/f09a587b-6657-461f-935f-6262717b61d8",
+					"raw": "{{base_uri}}/api/v1/deliverystate/bd2e61c4-b520-4fd3-bc1e-592595d1ba8e/approve",
 					"host": [
 						"{{base_uri}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"delivery",
-						"f09a587b-6657-461f-935f-6262717b61d8"
+						"deliverystate",
+						"bd2e61c4-b520-4fd3-bc1e-592595d1ba8e",
+						"approve"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete Delivery",
+			"name": "Cancel Delivery",
 			"request": {
-				"method": "DELETE",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_uri}}/api/v1/delivery/347ec1e6-6388-4da8-9fda-b3137600569f",
+					"raw": "{{base_uri}}/api/v1/deliverystate/bd2e61c4-b520-4fd3-bc1e-592595d1ba8e/cancel",
 					"host": [
 						"{{base_uri}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"delivery",
-						"347ec1e6-6388-4da8-9fda-b3137600569f"
+						"deliverystate",
+						"bd2e61c4-b520-4fd3-bc1e-592595d1ba8e",
+						"cancel"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Update Delivery",
+			"name": "Complete Delivery",
 			"request": {
-				"method": "PUT",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_uri}}/api/v1/delivery",
+					"raw": "{{base_uri}}/api/v1/deliverystate/bd2e61c4-b520-4fd3-bc1e-592595d1ba8e/complete",
 					"host": [
 						"{{base_uri}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"delivery"
+						"deliverystate",
+						"bd2e61c4-b520-4fd3-bc1e-592595d1ba8e",
+						"complete"
 					]
 				}
 			},

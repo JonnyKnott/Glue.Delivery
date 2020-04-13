@@ -68,6 +68,7 @@ namespace Glue.Delivery.WebApi
 
             services
                 .AddScoped<IDeliveryService, DeliveryService>()
+                .AddScoped<IDeliveryStateService, DeliveryStateService>()
                 .AddSingleton<IDynamoDbRepository<DeliveryRecord>, DynamoDbRepository<DeliveryRecord>>();
 
             if (_webHostEnvironment.IsDevelopment())
