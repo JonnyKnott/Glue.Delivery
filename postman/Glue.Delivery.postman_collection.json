@@ -6,13 +6,191 @@
 	},
 	"item": [
 		{
+			"name": "Authenticate",
+			"item": [
+				{
+					"name": "Sign In User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "938a7d45-4aa3-46c4-80f4-ffd6172a86d5",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"active_bearer\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"user\",\n\t\"password\": \"password1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_uri}}/api/v1/authentication",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In System",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "938a7d45-4aa3-46c4-80f4-ffd6172a86d5",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"active_bearer\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"user\",\n\t\"password\": \"password1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_uri}}/api/v1/authentication",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In Partner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "938a7d45-4aa3-46c4-80f4-ffd6172a86d5",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"active_bearer\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"partner\",\n\t\"password\": \"password1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_uri}}/api/v1/authentication",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "CRUD",
 			"item": [
+				{
+					"name": "Get Deliveries By Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/delivery?state=Completed",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delivery"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "Completed"
+								}
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Update Delivery",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"deliveryId\":\"{{latest_deliveryId}}\",\n    \"state\": \"created\",\n    \"accessWindow\": {\n        \"startTime\": \"2019-12-13T09:00:00Z\",\n        \"endTime\": \"2020-12-13T11:00:00Z\"\n    },\n    \"recipient\": {\n        \"name\": \"John Doe\",\n        \"address\": \"Merchant Road, London\",\n        \"email\": \"john.doe2@mail.com\",\n        \"phoneNumber\": \"+44123123123\"\n    },\n    \"order\": {\n        \"orderNumber\": \"12209667\",\n        \"sender\": \"Ikea\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{base_uri}}/api/v1/delivery",
 							"host": [
@@ -31,9 +209,15 @@
 					"name": "Delete Delivery",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_uri}}/api/v1/delivery/347ec1e6-6388-4da8-9fda-b3137600569f",
+							"raw": "{{base_uri}}/api/v1/delivery/{{latest_deliveryId}}",
 							"host": [
 								"{{base_uri}}"
 							],
@@ -41,7 +225,7 @@
 								"api",
 								"v1",
 								"delivery",
-								"347ec1e6-6388-4da8-9fda-b3137600569f"
+								"{{latest_deliveryId}}"
 							]
 						}
 					},
@@ -51,17 +235,22 @@
 					"name": "Get All Deliveries",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_uri}}/api/v1/delivery/f09a587b-6657-461f-935f-6262717b61d8",
+							"raw": "{{base_uri}}/api/v1/delivery",
 							"host": [
 								"{{base_uri}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"delivery",
-								"f09a587b-6657-461f-935f-6262717b61d8"
+								"delivery"
 							]
 						}
 					},
@@ -71,9 +260,24 @@
 					"name": "Get Delivery",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": ""
+							"raw": "{{base_uri}}/api/v1/delivery/0f101fe8-4fa6-490c-b201-bf66f6492fac",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delivery",
+								"0f101fe8-4fa6-490c-b201-bf66f6492fac"
+							]
 						}
 					},
 					"response": []
@@ -110,6 +314,105 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "State Operations",
+			"item": [
+				{
+					"name": "Approve Delivery",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/deliverystate/{{latest_deliveryId}}/approve?",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"deliverystate",
+								"{{latest_deliveryId}}",
+								"approve"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Delivery",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/deliverystate/{{latest_deliveryId}}/cancel",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"deliverystate",
+								"{{latest_deliveryId}}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Delivery",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{active_bearer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_uri}}/api/v1/deliverystate/{{latest_deliveryId}}/complete?",
+							"host": [
+								"{{base_uri}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"deliverystate",
+								"{{latest_deliveryId}}",
+								"complete"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Health Check",
 			"request": {
 				"method": "GET",
@@ -121,80 +424,6 @@
 					],
 					"path": [
 						"ping"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Deliveries By Status",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Approve Delivery",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_uri}}/api/v1/deliverystate/bd2e61c4-b520-4fd3-bc1e-592595d1ba8e/approve",
-					"host": [
-						"{{base_uri}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"deliverystate",
-						"bd2e61c4-b520-4fd3-bc1e-592595d1ba8e",
-						"approve"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cancel Delivery",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_uri}}/api/v1/deliverystate/bd2e61c4-b520-4fd3-bc1e-592595d1ba8e/cancel",
-					"host": [
-						"{{base_uri}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"deliverystate",
-						"bd2e61c4-b520-4fd3-bc1e-592595d1ba8e",
-						"cancel"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Complete Delivery",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_uri}}/api/v1/deliverystate/bd2e61c4-b520-4fd3-bc1e-592595d1ba8e/complete",
-					"host": [
-						"{{base_uri}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"deliverystate",
-						"bd2e61c4-b520-4fd3-bc1e-592595d1ba8e",
-						"complete"
 					]
 				}
 			},

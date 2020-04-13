@@ -1,7 +1,10 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using Glue.Delivery.Models.ApiModels.Auth;
 using Glue.Delivery.Models.ApiModels.Delivery;
 using Glue.Delivery.WebApi.Controllers;
+using Glue.Delivery.WebApi.Integration.Test.Helpers;
 using Glue.Delivery.WebApi.Integration.Test.Infrastructure;
 using Glue.Delivery.WebApi.Integration.Test.Services;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +22,10 @@ namespace Glue.Delivery.WebApi.Integration.Test.Controllers
         public DeliveryControllerTests(ServerFactory serverFactory)
         {
             _client = serverFactory.CreateClient();
+
+            var token = AuthorizationHelpers.GenerateTokenForRole(AuthorizationConstants.Claims.SystemClaim);
+            
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         }
         
         #region GET

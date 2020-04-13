@@ -18,6 +18,7 @@ namespace Glue.Delivery.WebApi.Integration.Test.Infrastructure
             return base.CreateWebHostBuilder()
                 .ConfigureAppConfiguration(builder => builder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
                 {
+                    new KeyValuePair<string, string>("Authentication:Secret", "0D49215F-76DF-471F-9F07-5E1B18BE1150")
                 }));
         }
         
