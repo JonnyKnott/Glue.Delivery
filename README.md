@@ -50,9 +50,9 @@ The recommendation is to run the full solution in Docker. The following commands
     docker-compose up
     ``` 
   
-The WebApi and the Worker should both be in a running state once the DynamoDb table has been created. The worker method should trigger at an interval set by the Environment Variable ScheduledService__Interval.
+The WebApi and the Worker should both be in a running state once the DynamoDb table has been created. The worker method should trigger at an interval set by the Environment Variable ScheduledService__Interval (default of 1 minute).
 
-When the application is running in Docker base url for the API is `http://localhost:9003` 
+When the application is running in Docker the base url for the API is `http://localhost:9003` 
 
 ### Using an IDE
 
