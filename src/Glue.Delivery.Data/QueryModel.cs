@@ -7,18 +7,18 @@ namespace Glue.Delivery.Data
 {
     public class QueryModel
     {
-        public QueryModel(string fieldName, ScanOperator operatorType, object value)
+        public QueryModel(string fieldName, ScanOperator operatorType, params object[] values)
         {
-            if(value == null)
-                throw new ArgumentException("Field is mandatory", nameof(value));
+            if(!values.Any())
+                throw new ArgumentException("Field is mandatory", nameof(values));
             
             FieldName = fieldName ?? throw new ArgumentException("Field is mandatory", nameof(fieldName));
-            Value = value;
+            Values = values;
             Operator = operatorType;
         }
         
         public string FieldName { get; }
         public ScanOperator Operator { get; }
-        public object Value { get; }
+        public object[] Values { get; }
     }
 }

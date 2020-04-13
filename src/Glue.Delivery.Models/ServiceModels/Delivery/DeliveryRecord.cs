@@ -14,8 +14,13 @@ namespace Glue.Delivery.Models.ServiceModels.Delivery
         public string DeliveryId { get; set; }
         [DynamoDBProperty]
         public DeliveryState State { get; set; }
+        
         [DynamoDBProperty]
-        public AccessWindow AccessWindow { get; set; }
+        public DateTime AccessWindowStartTime { get; set; }
+        
+        [DynamoDBProperty]
+        public DateTime AccessWindowEndTime { get; set; }
+
         [DynamoDBProperty]
         public Recipient Recipient { get; set; }
         [DynamoDBProperty]

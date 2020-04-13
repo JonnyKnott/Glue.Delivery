@@ -46,7 +46,7 @@ namespace Glue.Delivery.Data
             var scanConditions = queryModels == null ? 
                 new List<ScanCondition>() 
                 : queryModels.Select(x => new ScanCondition(
-                x.FieldName, x.Operator, x.Value)).ToList();
+                x.FieldName, x.Operator, x.Values)).ToList();
             
             var results = await _dynamoDbContext.ScanAsync<TDataType>(scanConditions).GetRemainingAsync();
 

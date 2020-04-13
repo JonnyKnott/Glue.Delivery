@@ -1,18 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2.DocumentModel;
 using Glue.Delivery.Core.Models;
 using Glue.Delivery.Data;
 using Glue.Delivery.Models.ServiceModels.Delivery;
 using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace Glue.Delivery.Services
 {
     public class DeliveryStateService : IDeliveryStateService
     {
+        private readonly ILogger<DeliveryStateService> _logger;
         private readonly IDynamoDbRepository<DeliveryRecord> _repository;
 
-        public DeliveryStateService(IDynamoDbRepository<DeliveryRecord> repository)
+        public DeliveryStateService(ILogger<DeliveryStateService> logger, IDynamoDbRepository<DeliveryRecord> repository)
         {
+            _logger = logger;
             _repository = repository;
         }
 
@@ -90,6 +95,32 @@ namespace Glue.Delivery.Services
             var updateResult = await _repository.UpdateItem(deliveryRecordResult.Result);
 
             return !updateResult.Success ? ServiceResult.Failed(updateResult.Errors) : ServiceResult.Succeeded();
+        }
+
+        public async Task<ServiceResult> ExpireDeliveries(DateTime cutoff)
+        {
+            var queryModels = new List<QueryModel>
+            {
+                new QueryModel(nameof(DeliveryRecord.State), ScanOperator.In,
+                    DeliveryState.Approved, DeliveryState.Created),
+                new QueryModel(nameof(DeliveryRecord.AccessWindowEndTime), ScanOperator.LessThan, cutoff)
+            };
+
+            var expiredDeliveries = await _repository.GetItems(queryModels);
+
+            if(!expiredDeliveries.Success)
+                return ServiceResult.Failed(expiredDeliveries.Errors);
+            
+            foreach (var delivery in expiredDeliveries.Result)
+            {
+                _logger.LogInformation($"Expiring delivery {delivery.DeliveryId} due to the access window passing at {delivery.AccessWindowEndTime}");
+                
+                delivery.State = DeliveryState.Expired;
+
+                await _repository.UpdateItem(delivery);
+            }
+            
+            return ServiceResult.Succeeded();
         }
     }
 }

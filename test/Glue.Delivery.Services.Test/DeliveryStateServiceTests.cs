@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Amazon.DynamoDBv2.DocumentModel;
+using Castle.Core.Logging;
 using Glue.Delivery.Core.Models;
 using Glue.Delivery.Data;
 using Glue.Delivery.Models.ServiceModels.Delivery;
 using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -17,8 +23,8 @@ namespace Glue.Delivery.Services.Test
         public DeliveryStateServiceTests()
         {
             _mockRepository = new Mock<IDynamoDbRepository<DeliveryRecord>>();
-            
-            _deliveryStateService = new DeliveryStateService(_mockRepository.Object);
+            var mockLogger = new Mock<ILogger<DeliveryStateService>>();
+            _deliveryStateService = new DeliveryStateService(mockLogger.Object, _mockRepository.Object);
             
             _mockRepository.Setup(x => x.UpdateItem(It.IsAny<DeliveryRecord>()))
                 .ReturnsAsync(ServiceResult.Succeeded);
@@ -235,6 +241,86 @@ namespace Glue.Delivery.Services.Test
             Assert.Contains(ErrorCodes.Status.NotFound, result.Errors);
             _mockRepository.Verify(x => 
                 x.UpdateItem(It.Is<DeliveryRecord>(record => record.DeliveryId == delivery.DeliveryId)), Times.Never);
+        }
+        
+        [Fact]
+        public async void ExpireDeliveries_Should_Update_Returned_Items()
+        {
+            var expiredDeliveries = new List<DeliveryRecord>
+            {
+                new DeliveryRecord
+                {
+                    DeliveryId = Guid.NewGuid().ToString(),
+                    AccessWindowEndTime = DateTime.Now,
+                    State = DeliveryState.Created
+                }
+            };
+            
+            SetupSuccessfulGetForItems(expiredDeliveries);
+
+            _mockRepository.Setup(x => x.UpdateItem(It.IsAny<DeliveryRecord>()))
+                .ReturnsAsync(ServiceResult.Succeeded);
+
+            var cutoff = DateTime.UtcNow;
+            
+            var result = await _deliveryStateService.ExpireDeliveries(cutoff);
+            
+            Assert.True(result.Success);
+            
+            _mockRepository.Verify(
+                x => x.UpdateItem(It.Is<DeliveryRecord>(
+                    record => record.State == DeliveryState.Expired && record.DeliveryId == expiredDeliveries.Single().DeliveryId)));
+        }
+
+        [Fact]
+        public async void ExpireDeliveries_Should_Call_Repository_With_Query_Conditions_For_State_And_Expiry()
+        {
+            var expiredDeliveries = new List<DeliveryRecord>
+            {
+                new DeliveryRecord
+                {
+                    DeliveryId = Guid.NewGuid().ToString(),
+                    AccessWindowEndTime = DateTime.Now,
+                    State = DeliveryState.Created
+                }
+            };
+            
+            SetupSuccessfulGetForItems(expiredDeliveries);
+
+            _mockRepository.Setup(x => x.UpdateItem(It.IsAny<DeliveryRecord>()))
+                .ReturnsAsync(ServiceResult.Succeeded);
+
+            var cutoff = DateTime.UtcNow;
+            
+            var result = await _deliveryStateService.ExpireDeliveries(cutoff);
+            
+            Assert.True(result.Success);
+            
+            _mockRepository.Verify(
+                x => x
+                    .GetItems(
+                        It.Is<ICollection<QueryModel>>(
+                            queries => 
+                                queries.Count == 2 && 
+                                queries.Any(
+                                    query => 
+                                        query.FieldName == nameof(DeliveryRecord.State) &&
+                                        query.Values.Contains(DeliveryState.Created) &&
+                                        query.Values.Contains(DeliveryState.Approved) &&
+                                        query.Operator == ScanOperator.In
+                                ) && 
+                                queries.Any(
+                                    query =>
+                                        query.FieldName == nameof(DeliveryRecord.AccessWindowEndTime) &&
+                                        query.Values.Contains(cutoff) &&
+                                        query.Operator == ScanOperator.LessThan)
+                                )), Times.Once);
+        }
+
+        private void SetupSuccessfulGetForItems(ICollection<DeliveryRecord> deliveryRecords)
+        {
+            _mockRepository.Setup(x => x.GetItems(It.IsAny<ICollection<QueryModel>>()))
+                .ReturnsAsync(ServiceObjectResult<ICollection<DeliveryRecord>>.Succeeded(deliveryRecords));
         }
 
         private void SetupSuccessfulGetForDelivery(DeliveryRecord deliveryRecord)

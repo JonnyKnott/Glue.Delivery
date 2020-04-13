@@ -21,7 +21,12 @@ namespace Glue.Delivery.WebApi.Integration.Test.Services
         {
             return Task.FromResult(CreateResponseForRequest(deliveryId));
         }
-        
+
+        public Task<ServiceResult> ExpireDeliveries(DateTime cutoff)
+        {
+            throw new NotImplementedException();
+        }
+
         private ServiceResult CreateResponseForRequest(string deliveryId)
         {
             switch (deliveryId)

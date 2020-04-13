@@ -19,7 +19,7 @@ WORKDIR /src
 COPY . .
 
 FROM source as publish
-WORKDIR /src/src/Glue.Delivery.WebApi
+WORKDIR /src/src/Glue.Delivery.DeliveryState.Worker
 RUN dotnet build -c Release -o /app
 RUN dotnet publish -c Release -o /app
 
@@ -27,4 +27,4 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as base
 WORKDIR /ap
 COPY --from=publish /app .
 EXPOSE 80
-ENTRYPOINT ["dotnet", "Glue.Delivery.WebApi.dll"]
+ENTRYPOINT ["dotnet", "Glue.Delivery.DeliveryState.Worker.dll"]

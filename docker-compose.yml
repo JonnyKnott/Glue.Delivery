@@ -13,6 +13,22 @@ services:
     ports:
       - 9003:80
     restart: always
+    depends_on:
+      - dynamodb
+  delivery-state-service:
+    build:
+      context: ./
+      dockerfile: src/Glue.Delivery.DeliveryState.Worker/Dockerfile
+    environment:
+      - ENVIRONMENT=Development
+      - ScheduledService__Interval=00:01:00
+      - Connections__DynamoDb=http://dynamodb:8000
+      - AWS_ACCESS_KEY_ID=abc
+      - AWS_SECRET_ACCESS_KEY=def
+    restart: always
+    depends_on:
+      - webapi
+      - dynamodb
   dynamodb:
     image: amazon/dynamodb-local
     hostname: dynamodb-local
