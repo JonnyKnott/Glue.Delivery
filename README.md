@@ -28,13 +28,13 @@ The system manages State advancement permissions using JWT authentication and Cl
 - Partner - Assumed to be the retailer. Is allowed access to Create, Read and Update Delivery details, and to Complete and Approved deliveries.
 - System - Assumed to be a system process. Has full API permissions. (Only a System user can outright Delete a Delivery).
 
-##Pre-Requisites
+## Pre-Requisites
 
 - The application uses .NET Core 3.1.
 - The application requires access to a dynamodb table to persist delivery. A local DynamoDb instance can be run using Docker, and the WebApi will create the table it needs on Startup.
 - It is recommended to build and run the application using the docker-compose file.
 
-##Running the application
+## Running the application
 
 ### Using Docker (recommended)
 
