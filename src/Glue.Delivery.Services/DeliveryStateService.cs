@@ -36,6 +36,9 @@ namespace Glue.Delivery.Services
             
             if(!deliveryRecordResult.Result.IsPending)
                 return ServiceResult.Failed(new List<string> {ErrorCodes.Status.BadRequest, ErrorCodes.Messages.InvalidStateProgression});
+            
+            if(deliveryRecordResult.Result.AccessWindowStartTime < DateTime.UtcNow)
+                return ServiceResult.Failed(new List<string> {ErrorCodes.Status.BadRequest, ErrorCodes.Messages.InvalidStateProgression, "A delivery cannot be approved once the start time has passed"});
 
             if (deliveryRecordResult.Result.State == DeliveryState.Created)
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
@@ -15,6 +16,7 @@ using Glue.Delivery.Services;
 using Glue.Delivery.WebApi.Mapping;
 using Glue.Delivery.WebApi.Middleware;
 using Glue.Delivery.WebApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Glue.Delivery.WebApi
 {
@@ -44,6 +47,8 @@ namespace Glue.Delivery.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionConfiguration = _configuration.GetSection("Connections").Get<ConnectionConfiguration>();
+            var authenticationConfiguration =
+                _configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
             
             services.AddControllers();
 
@@ -69,7 +74,8 @@ namespace Glue.Delivery.WebApi
             services
                 .AddScoped<IDeliveryService, DeliveryService>()
                 .AddScoped<IDeliveryStateService, DeliveryStateService>()
-                .AddSingleton<IDynamoDbRepository<DeliveryRecord>, DynamoDbRepository<DeliveryRecord>>();
+                .AddSingleton<IDynamoDbRepository<DeliveryRecord>, DynamoDbRepository<DeliveryRecord>>()
+                .AddSingleton(authenticationConfiguration);
 
             if (_webHostEnvironment.IsDevelopment())
             {
@@ -97,6 +103,31 @@ namespace Glue.Delivery.WebApi
                     .AddTransient<IDynamoDBContext, DynamoDBContext>();
 
             }
+
+            AddAuthentication(services, authenticationConfiguration);
+
+        }
+
+        private void AddAuthentication(IServiceCollection services, AuthenticationConfiguration config)
+        {
+            var key = Encoding.ASCII.GetBytes(config.Secret);
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,7 +151,8 @@ namespace Glue.Delivery.WebApi
             });
             
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseMiddleware<MappingExceptionMiddleware>();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
