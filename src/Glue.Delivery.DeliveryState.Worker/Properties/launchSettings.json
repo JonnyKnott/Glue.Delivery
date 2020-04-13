@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "Glue.Delivery.DeliveryState.Worker": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ENVIRONMENT": "Development",
+        "ScheduledService__Interval": "00:01:00"
+      }
+    }
+  }
+}
