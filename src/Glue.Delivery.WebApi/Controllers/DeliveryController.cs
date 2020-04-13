@@ -5,19 +5,20 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Glue.Delivery.Core.Helpers;
 using Glue.Delivery.Core.Models;
+using Glue.Delivery.Models.ApiModels.Auth;
 using Glue.Delivery.Models.ApiModels.Delivery;
 using Glue.Delivery.Models.ServiceModels.Delivery;
 using Glue.Delivery.Models.ServiceModels.Delivery.Enums;
 using Glue.Delivery.Services;
-using Glue.Delivery.WebApi.Mapping.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ServiceModels = Glue.Delivery.Models.ServiceModels;
 using ApiModels = Glue.Delivery.Models.ApiModels;
 
 namespace Glue.Delivery.WebApi.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route( "api/v{version:apiVersion}/{controller}" )]
     public class DeliveryController : ControllerBase
     {
