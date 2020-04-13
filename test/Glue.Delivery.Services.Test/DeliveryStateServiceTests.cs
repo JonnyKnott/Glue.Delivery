@@ -55,7 +55,8 @@ namespace Glue.Delivery.Services.Test
             var delivery = new DeliveryRecord
             {
                 DeliveryId = Guid.NewGuid().ToString(),
-                State = DeliveryState.Created
+                State = DeliveryState.Created,
+                AccessWindowStartTime = DateTime.Now.AddDays(1)
             };
             
             SetupSuccessfulGetForDelivery(delivery);

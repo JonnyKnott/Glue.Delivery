@@ -82,6 +82,7 @@ namespace Glue.Delivery.WebApi.Controllers
                 : GenerateResultFromServiceResult(result);
         }
 
+        [Authorize(Roles = AuthorizationConstants.Claims.SystemClaim)]
         [HttpDelete("{deliveryId}")]
         public async Task<IActionResult> Delete(string deliveryId)
         {
