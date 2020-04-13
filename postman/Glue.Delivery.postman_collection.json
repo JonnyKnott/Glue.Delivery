@@ -184,7 +184,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"deliveryId\":\"{{latest_deliveryId}}\",\n    \"state\": \"created\",\n    \"accessWindow\": {\n        \"startTime\": \"2019-12-13T09:00:00Z\",\n        \"endTime\": \"2020-12-13T11:00:00Z\"\n    },\n    \"recipient\": {\n        \"name\": \"John Doe\",\n        \"address\": \"Merchant Road, London\",\n        \"email\": \"john.doe2@mail.com\",\n        \"phoneNumber\": \"+44123123123\"\n    },\n    \"order\": {\n        \"orderNumber\": \"12209667\",\n        \"sender\": \"Ikea\"\n    }\n}",
+							"raw": "{\n\t\"deliveryId\":\"{{latest_deliveryId}}\",\n    \"accessWindow\": {\n        \"startTime\": \"2019-12-13T09:00:00Z\",\n        \"endTime\": \"2020-12-13T11:00:00Z\"\n    },\n    \"recipient\": {\n        \"name\": \"John Doe\",\n        \"address\": \"Merchant Road, London\",\n        \"email\": \"john.doe2@mail.com\",\n        \"phoneNumber\": \"+44123123123\"\n    },\n    \"order\": {\n        \"orderNumber\": \"12209667\",\n        \"sender\": \"Ikea\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
